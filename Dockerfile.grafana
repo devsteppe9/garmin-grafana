@@ -1,0 +1,25 @@
+# Dockerfile for Grafana setup
+FROM grafana/grafana:latest
+
+# Set environment variables
+ENV GF_PLUGINS_PREINSTALL=marcusolsson-hourly-heatmap-panel \
+    GF_DATE_FORMATS_FULL_DATE="MMM Do, YYYY - hh:mm:ss a" \
+    GF_DATE_FORMATS_INTERVAL_SECOND="hh:mm:ss a" \
+    GF_DATE_FORMATS_INTERVAL_MINUTE="hh:mm a" \
+    GF_DATE_FORMATS_INTERVAL_HOUR="MMM DD hh:mm a" \
+    GF_DATE_FORMATS_INTERVAL_DAY="MMM DD" \
+    GF_DATE_FORMATS_INTERVAL_MONTH="YYYY-MM" \
+    GF_DATE_FORMATS_INTERVAL_YEAR="YYYY"
+
+# Copy provisioning files for datasources and dashboards
+COPY ./Grafana_Datasource /etc/grafana/provisioning/datasources
+COPY ./Grafana_Dashboard /etc/grafana/provisioning/dashboards
+
+# Replacing {DS_GARMIN_STATS} variable with garmin_influxdb in the dashboard JSON...
+RUN sed -i 's/\${DS_GARMIN_STATS}/garmin_influxdb/g' /etc/grafana/provisioning/dashboards/Garmin-Grafana-Dashboard.json
+
+# Expose Grafana's default port
+EXPOSE 3000
+
+# Start Grafana
+CMD ["/run.sh"]

@@ -69,21 +69,15 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_PLUGINS_PREINSTALL=marcusolsson-hourly-heatmap-panel
-      - GF_DATE_FORMATS_FULL_DATE=MMM Do, YYYY - hh:mm:ss a
-      - GF_DATE_FORMATS_INTERVAL_SECOND=hh:mm:ss a
-      - GF_DATE_FORMATS_INTERVAL_MINUTE=hh:mm a
-      - GF_DATE_FORMATS_INTERVAL_HOUR=MMM DD hh:mm a
-      - GF_DATE_FORMATS_INTERVAL_DAY=MMM DD
-      - GF_DATE_FORMATS_INTERVAL_MONTH=YYYY-MM
-      - GF_DATE_FORMATS_INTERVAL_YEAR=YYYY
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./Grafana_Datasource:/etc/grafana/provisioning/datasources # (optional) Self provisioning influxdb datasource
-      - ./Grafana_Dashboard:/etc/grafana/provisioning/dashboards # (optional) self provisioning grafana dashboard
     ports:
       - '3000:3000'
-    image: 'grafana/grafana:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - '3000:3000'
 
 volumes:
   influxdb_data:
