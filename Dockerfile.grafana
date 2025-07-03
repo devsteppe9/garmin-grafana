@@ -1,0 +1,15 @@
+# Dockerfile for Grafana setup
+FROM grafana/grafana:latest
+
+# Copy provisioning files for datasources and dashboards
+COPY ./Grafana_Datasource /etc/grafana/provisioning/datasources
+COPY ./Grafana_Dashboard /etc/grafana/provisioning/dashboards
+
+# Replacing {DS_GARMIN_STATS} variable with garmin_influxdb in the dashboard JSON...
+RUN sed -i 's/\${DS_GARMIN_STATS}/garmin_influxdb/g' /etc/grafana/provisioning/dashboards/Garmin-Grafana-Dashboard.json
+
+# Expose Grafana's default port
+EXPOSE 3000
+
+# Start Grafana
+CMD ["/run.sh"]
