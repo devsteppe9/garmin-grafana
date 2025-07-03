@@ -208,7 +208,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: dedaced/garmin-grafana:latest
+          image: grafana/grafana:latest
           envFrom:
             - configMapRef:
                 name: grafana-config
