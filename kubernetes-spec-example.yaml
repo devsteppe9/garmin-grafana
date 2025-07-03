@@ -45,7 +45,6 @@ metadata:
   name: influxdb-config
 data:
   INFLUXDB_DB: GarminStats
-  INFLUXDB_USER: influxdb_user
   INFLUXDB_DATA_INDEX_VERSION: tsi1
   ###############################################################
   # The following ENV variables are applicable for InfluxDB V3
